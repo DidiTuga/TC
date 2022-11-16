@@ -1,3 +1,4 @@
+(*add some comment*)
 open List
 open Scanf
 open Array
