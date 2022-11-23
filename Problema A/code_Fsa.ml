@@ -58,6 +58,7 @@ As configuraÃ§Ãµes da mÃ¡quina (nÃ£o determinista), aqui designada de me
 
 *)
 
+ 
 type memoria = (estado list * fita)
 
 (** uma excepÃ§Ã£o para assinalar o fim de uma execuÃ§Ã£o *)
