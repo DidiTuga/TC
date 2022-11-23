@@ -2,7 +2,7 @@
 Resolução dos problemas de Teoria de Computação 2022/2023
 
 
-Para executar basta fazer 
+Para executar:
 ```
 ./run.sh
 ```
