@@ -47,6 +47,8 @@ let string_of_token = function
     | Ident i -> "ident" ^ i
     | Int i -> "int" ^ string_of_int i
     | Error e -> "error" ^ e
+(* MC Naughton-Yamada*)
+
 
 let () =
     let buffer = String.split_on_char ' ' (read_line ()) in
