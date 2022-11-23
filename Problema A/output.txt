@@ -1,0 +1,63 @@
+NDFA
+false
+
+false
+
+false
+
+false
+
+false
+
+false
+
+false
+
+false
+
+false
+
+1 2 1 3 
+2
+b
+b_ola
+a_ola
+a_ola
+21b_ola1
+false
+
+false
+
+false
+
+false
+
+false
+
+false
+
+false
+
+false
+
+false
+
+1 2 1 3 
+4
+a
+a_ola
+a_ola
+42a_ola1
+true
+1 2 1 3 4 2 4
+true
+1 2 1 3 4 2 4
+true
+1 2 1 3 4 2 4
+true
+1 2 1 3 4 2 4
+true
+1 2 1 3 4 2 4
+true
+1 2 1 3 4 2 4
+YES1 2 1 3 4 2 4

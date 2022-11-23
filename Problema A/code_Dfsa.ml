@@ -144,6 +144,14 @@ let main () =
 main ();;
 
 (** exemplo de entrada: 
-a a b a 0 1 2 0 a 0 0 b 1 0 a 3 1 a 2 2 a 3 3 a 1 3 a 2
+a a b a 
+0 1 2 
+0 a 0
+ 0 b 1 
+ 0 a 3 
+ 1 a 2 
+ 2 a 3 
+ 3 a 1 
+ 3 a 2
 *)
 

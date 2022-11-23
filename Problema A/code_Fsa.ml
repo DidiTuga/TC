@@ -114,7 +114,6 @@ Generaliza a funÃ§Ã£o anterior. A funÃ§Ã£o epsilon_trans calcula todos o
 
 *)
 
-
 let rec epsilon_trans lstate maq = 
   
   	(** res = todos os estados atingÃ­veis por uma transiÃ§Ã£o epsilon a partir dos estados de lstate *)
