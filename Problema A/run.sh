@@ -7,7 +7,7 @@ start=`date +%s000`
 # This script is used to run the problem A of TC
 # print in the terminal date and time of the start of the execution
 echo "------------$(date)--------------------"
-date >> out.txt
+date > out.txt
 echo "------------------------------------------------------------" >> out.txt
 echo "TC - Problema A"
 # Compile
@@ -22,7 +22,7 @@ for f in tests/*.txt; do
     if (./a.out < $f) > out; then
         echo "Teste $max_i: $f:" >> out.txt
         ./a.out < $f >> out.txt
-	    if cmp --quiet out $expected; then
+	    if cmp out $expected; then
         end=`date +%s000`
         elapsed=$(($end-$start))
         echo "$f - Time elapsed: $elapsed"
@@ -39,7 +39,10 @@ done
 rm -f out
 rm *.o *.cmx *.cmi
 echo "------------------------------------------------------------" >> out.txt
+
 echo 
 # if the result is the expected is 100%
 percent=`expr 100 \* $score_i / $max_i`;
-echo "Score: $score_i / $max_i testes, seja $percent%"
+echo "Score: $score_i / $max_i testes =  $percent%"
+echo "File out.txt:"
+cat out.txt

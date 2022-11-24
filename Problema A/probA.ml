@@ -62,13 +62,19 @@ let transicoes =
  (* a ultima linha contem uma string representando a palavra t por reconhecer *)
 
   (*Separar o ultima em uma lista*)
+
+let palavra = Scanf.scanf " %s" (fun a -> a)
+
+let tam_ajuda= ref 0
 let chars_of_string s =
+  
   let l = ref [] in
+  if s = "" then (l:=[' ']; tam_ajuda :=1)  else
   for p = 0 to String.length s - 1 do
     l := s.[p] :: !l
-  done;
+  done ;
   List.rev !l;;
-let ultima = chars_of_string (Scanf.scanf " %s" (fun a -> a))
+let ultima = chars_of_string palavra
 
 
   (*Verifica se o automato é determinista se for da print a DFA se nao for dá print a NDFA*)
@@ -112,25 +118,29 @@ let rec percorre_automato ultima estado str =
   | [] -> if List.mem estado finais then (true, str) else (false, "")
   | hd::tl -> 
       try
-        let todos_os_possiveis = ref(List.find_all (fun ((a,b), c) -> a = estado && (c = hd || (c ='_' && a != b))) !list_input)in
+        let todos_os_possiveis = ref [] in 
+        if !tam_ajuda = 1 then (todos_os_possiveis := (List.find_all (fun ((a,b), c) -> a = estado && (c = hd || (c ='_' ))) !list_input)) else(
+        todos_os_possiveis := (List.find_all (fun ((a,b), c) -> a = estado && (c = hd || (c ='_' && a != b))) !list_input));
               
-              (*DEBUG
-              print_endline str;
-              print_string "estado: "; print_int estado; print_newline();
-              print_string "HD: "; print_char hd; print_newline();
-              print_string "TL: "; List.iter (fun x -> print_char x) tl; print_newline();
-              List.iter (fun ((a,b), c) -> print_int (a); print_int (b); print_char c; print_endline "_ola1") !todos_os_possiveis;
-              *)
+          
+          print_endline str;
+          print_string "estado: "; print_int estado; print_newline();
+          print_string "HD: "; print_char hd; print_newline();
+          print_string "TL: "; List.iter (fun x -> print_char x) tl; print_newline();
+          List.iter (fun ((a,b), c) -> print_int (a); print_int (b); print_char c; print_endline "_ola1") !todos_os_possiveis;
+          
 
         let tam = ref (List.length !todos_os_possiveis) in
         while !tam > 0 do
           let ((a,b), c) = List.hd !todos_os_possiveis in
           todos_os_possiveis := List.tl !todos_os_possiveis;
           let str_aux = ref "" in 
-          if tl = [] && c != '_' then str_aux := str ^(string_of_int a)^ " " ^(string_of_int b) else str_aux := str ^ (string_of_int a)^ " ";
-          if c = '_' then (
+          if tl = [] && c != '_' && List.mem b finais then str_aux := str ^(string_of_int a)^ " " ^(string_of_int b) else(
+            if !tam_ajuda = 1 && List.mem a finais && a = b then str_aux := str ^ (string_of_int a) else 
+              if !tam_ajuda = 1 && List.mem b finais then str_aux := str ^(string_of_int a)^ " " ^(string_of_int b) else str_aux := str ^(string_of_int a)^ " ");
+          if c = '_' then ( if !tam_ajuda = 1 then (if List.mem b finais then melhor := percorre_automato tl b !str_aux else melhor := percorre_automato ([hd]@tl) b !str_aux)   else(
             let bool, value = percorre_automato (hd::tl) b !str_aux in
-            if bool then tam:=0; melhor:= (bool, value);)
+            if bool then tam:=0; melhor:= (bool, value));)
           else (
             let bool, value = percorre_automato tl b !str_aux in
             if bool then tam:= 0;melhor:= (bool, value));
