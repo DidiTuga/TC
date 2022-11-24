@@ -1,2 +1,0 @@
-# ProblemaA_TC
-teste
