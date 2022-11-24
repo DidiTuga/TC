@@ -117,7 +117,7 @@ else
   for x = 1 to n do
     let aux = ref [] in 
     for y = 1 to n do
-        (*percorre a hashtbl*)
+      (*percorre a hashtbl*)
       try
         let b =  (Hashtbl.find transicoes (x, y)) in
         if List.mem '_' !b then booleano := true else
@@ -128,7 +128,6 @@ else
     done;
   done;
 if !booleano then print_endline "NDFA" else print_endline "DFA"
-        
 
 (*
   Recebe um estado e uma string
