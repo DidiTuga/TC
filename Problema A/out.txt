@@ -1,4 +1,4 @@
-Thu Nov 24 09:57:00 WET 2022
+Thu Nov 24 14:06:11 WET 2022
 ------------------------------------------------------------
 Teste 1: tests/input.txt:
 NDFA
@@ -30,4 +30,8 @@ Teste 8: tests/input8.txt:
 NDFA
 YES
 1 2 3 4
+Teste 9: tests/input9.txt:
+DFA
+YES
+1 2 1
 ------------------------------------------------------------
