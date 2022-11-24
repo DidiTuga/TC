@@ -112,48 +112,81 @@ let determinista =
   if !booleano then print_endline "NDFA" else print_endline "DFA"
           
 
+let rec caminho_possivel estado str =
+  let str_aux = ref str in
+  let aux = ref false in
+  let possiveis = ref (List.find_all (fun ((a,b), c) -> a = estado && c = '_') !list_input) in
+                let tam_aux = ref (List.length !possiveis) in
+                while !tam_aux > 0 do
+                  let ((a,b), c) = List.hd !possiveis in
+                  possiveis := List.tl !possiveis;
+                  tam_aux := !tam_aux - 1;
+                  if List.mem b finais then( str_aux:= !str_aux^(string_of_int b); aux:=true; tam_aux:= 0)else
+                    let naosei = caminho_possivel b (!str_aux ^(string_of_int b)^" ") in
+                    aux:=fst(naosei); str_aux := snd(naosei);
+                done;
+                (!aux,!str_aux)
+
 let rec percorre_automato ultima estado str = 
-  let melhor = ref (false, "") in
+  let melhor = ref (false, "1") in
+  (*print_endline str;
+  List.iter (fun x -> print_char x) ultima; print_newline(); print_int estado; print_newline();*)
   match ultima with
-  | [] -> if List.mem estado finais then (true, str) else (false, "")
+  | [] -> if List.mem estado finais then  (true, str) else (false, "2")
   | hd::tl -> 
       try
         let todos_os_possiveis = ref [] in 
         if !tam_ajuda = 1 then (todos_os_possiveis := (List.find_all (fun ((a,b), c) -> a = estado && (c = hd || (c ='_' ))) !list_input)) else(
         todos_os_possiveis := (List.find_all (fun ((a,b), c) -> a = estado && (c = hd || (c ='_' && a != b))) !list_input));
               
-          
+          (*
           print_endline str;
           print_string "estado: "; print_int estado; print_newline();
           print_string "HD: "; print_char hd; print_newline();
           print_string "TL: "; List.iter (fun x -> print_char x) tl; print_newline();
           List.iter (fun ((a,b), c) -> print_int (a); print_int (b); print_char c; print_endline "_ola1") !todos_os_possiveis;
-          
+          *)
 
         let tam = ref (List.length !todos_os_possiveis) in
         while !tam > 0 do
           let ((a,b), c) = List.hd !todos_os_possiveis in
           todos_os_possiveis := List.tl !todos_os_possiveis;
           let str_aux = ref "" in 
-          if tl = [] && c != '_' && List.mem b finais then str_aux := str ^(string_of_int a)^ " " ^(string_of_int b) else(
-            if !tam_ajuda = 1 && List.mem a finais && a = b then str_aux := str ^ (string_of_int a) else 
-              if !tam_ajuda = 1 && List.mem b finais then str_aux := str ^(string_of_int a)^ " " ^(string_of_int b) else str_aux := str ^(string_of_int a)^ " ");
-          if c = '_' then ( if !tam_ajuda = 1 then (if List.mem b finais then melhor := percorre_automato tl b !str_aux else melhor := percorre_automato ([hd]@tl) b !str_aux)   else(
-            let bool, value = percorre_automato (hd::tl) b !str_aux in
-            if bool then tam:=0; melhor:= (bool, value));)
+          if tl = [] && c != '_' then(  if not (List.mem b finais) then ( melhor:= percorre_automato [] b (str ^(string_of_int a)^ " ")) else str_aux := str ^(string_of_int a)^ " " ^(string_of_int b) )
+          else(
+              if !tam_ajuda = 1 && List.mem a finais && a = b then str_aux := str ^ (string_of_int a) else 
+              if !tam_ajuda = 1 && List.mem b finais then str_aux := str ^(string_of_int a)^ " " ^(string_of_int b) else str_aux := str ^(string_of_int a)^ " "
+              );
+          
+          
+          if c = '_' then ( if !tam_ajuda = 1 then (if List.mem b finais then melhor := percorre_automato tl b !str_aux else melhor := percorre_automato ([hd]@tl) b !str_aux)   
+              else(
+                  let bool, value = percorre_automato (hd::tl) b !str_aux in
+                  if bool then (tam:=0; melhor:= (bool, value))
+                  );
+            )
           else (
+            
+            (* ERROR ESTA AQUI*)
+            if tl = [] then (if List.mem b finais then melhor := percorre_automato tl b !str_aux else
+              (
+                let bool, value = caminho_possivel b (str ^(string_of_int a)^ " " ^(string_of_int b)^ " ") in
+                if bool then tam:= 0;melhor:= (bool, value);
+
+              )) else (
+                
             let bool, value = percorre_automato tl b !str_aux in
-            if bool then tam:= 0;melhor:= (bool, value));
+            if bool then tam:= 0;melhor:= (bool, value)));
                              
           tam:= !tam -1;
                 (*print_endline !str_aux;*)
         done; 
-              (*DEBUG
+              (*
               print_endline (string_of_bool (fst !melhor));
-              print_endline (snd !melhor);
-              DEBUG*)
+              print_endline (snd !melhor);*)
+              
         !melhor;
-      with Not_found -> (false, "")
+      with Not_found -> (false, "3")
             
 let com_inicial  = 
   let aux = ref 0 in
