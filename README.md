@@ -1,5 +1,5 @@
 # TC
-Resolução dos problemas de Teoria de Computação 2022/2023
+Resolução dos problemas práticos de Teoria de Computação 2022/2023
 
 
 Para executar:
