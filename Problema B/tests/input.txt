@@ -1,0 +1,9 @@
+abbabba
+7
+S -> S F
+S -> a
+A -> C C
+A -> S S
+A -> C S
+C -> b
+F -> A S
