@@ -37,7 +37,7 @@ Autores:
         - senão
             - retorne falso
       Fim da função CYK(G, w)
-    *)
+    
     type regra_producao = {esquerda: string; direita: string}
     type nao_terminais = (int, string) Hashtbl.t
     type terminais = (int, string) Hashtbl.t
@@ -134,5 +134,23 @@ Autores:
     Hashtbl.add gramatica.regras_producao 6 {esquerda = "C"; direita = "cC"};
     Hashtbl.add gramatica.regras_producao 7 {esquerda = "C"; direita = "a"};
     cyk gramatica "abcc"
-*)
+*)*)
+(*Input *)
 
+let palavra = Scanf.scanf " %s" (fun a -> a)
+
+let num_transicoes = Scanf.scanf " %d" (fun a -> a)
+
+
+
+let list_trans = List.init num_transicoes (fun _ -> Scanf.scanf " %s -> %s\n" (fun a b -> (a, b)))
+
+(*Recebe uma string e separa por espaços e devolve em (a , b)*)
+
+
+
+let () = 
+(*Print list_trans*)
+let a, b = List.hd list_trans in
+print_endline b;
+List.iter (fun (a, b) -> print_endline ( a ^ " -> " ^  b  )) (list_trans)
