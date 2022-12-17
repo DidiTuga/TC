@@ -137,20 +137,25 @@ Autores:
 *)*)
 (*Input *)
 
-let palavra = Scanf.scanf " %s" (fun a -> a)
-
-let num_transicoes = Scanf.scanf " %d" (fun a -> a)
-
+(*Ler palavra para reconhecer *)
+let palavra = read_line ()
 
 
-let list_trans = List.init num_transicoes (fun _ -> Scanf.scanf " %s -> %s\n" (fun a b -> (a, b)))
+(*Ler quantas transições temos*)
+let num_transicoes = read_int ()
 
-(*Recebe uma string e separa por espaços e devolve em (a , b)*)
+(*Função para ler uma transição e devolve os caracteres, o primeiro é de onde vem para onde vai S -> a = (S,a)*)
+let lerLinha = 
+  let linha = read_line () in
+  if String.length linha == 6 then (linha.[0], linha.[5], ' ')
+  else (linha.[0], linha.[5], linha.[7])
+
+(*Lista onde vai guardar todas as transiçoes*)
+let list_trans = List.init num_transicoes (fun _ -> lerLinha)
 
 
 
 let () = 
 (*Print list_trans*)
-let a, b = List.hd list_trans in
-print_endline b;
-List.iter (fun (a, b) -> print_endline ( a ^ " -> " ^  b  )) (list_trans)
+
+List.iter (fun (a, b, c) -> print_endline ( String.make 1 a ^ " -> " ^  String.make 1 b ^ " " ^ String.make 1 c  )) (list_trans)
