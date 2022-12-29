@@ -1,0 +1,46 @@
+Thu Dec 29 02:03:16 WET 2022
+------------------------------------------------------------
+Teste 1: tests/input.txt:
+YES
+S														
+		F												
+				A										
+S						S								
+		F						F						
+		A		A				A		A				
+S		C		C		S		C		C		S		
+a		b		b		a		b		b		a		
+Teste 2: tests/input2.txt:
+NO
+																												
+																												
+																												
+F																												
+		A																										
+				S																								
+						F																						
+						A																						
+						G		F G		F																		
+								A		A		A																
+										S				S														
+F						G						F G		F		F						G						
+A		A						A				A		A		A		A						A				
+S		S		S		C		C		S		C		S		S		S		S		C		C		S		
+a		a		a		b		b		a		b		a		a		a		a		b		b		a		
+Teste 3: tests/input3.txt:
+YES
+A S										
+A S		A S								
+A S		S		A S						
+A S		A		S		A S				
+A		S		A		A		S		
+a		b		a		a		b		
+Teste 4: tests/input4.txt:
+YES
+S										
+		B								
+		S								
+				B						
+A		A		S		A		A		
+a		a		b		a		a		
+------------------------------------------------------------

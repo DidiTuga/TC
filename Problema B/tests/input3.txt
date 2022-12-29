@@ -1,0 +1,8 @@
+abaab
+6
+S -> A A
+S -> A S
+S -> b
+A -> A S
+A -> S A
+A -> a

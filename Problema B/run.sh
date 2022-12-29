@@ -9,7 +9,7 @@ start=`date +%s000`
 echo "------------$(date)--------------------"
 date > out.txt
 echo "------------------------------------------------------------" >> out.txt
-echo "TC - Problema A"
+echo "TC - Problema B"
 # Compile
 ocamlopt probB.ml
 for f in tests/*.txt; do
@@ -44,5 +44,5 @@ echo
 # if the result is the expected is 100%
 percent=`expr 100 \* $score_i / $max_i`;
 echo "Score: $score_i / $max_i testes =  $percent%"
-echo "File out.txt:"
+echo "File out.txt --- PRINT:"
 cat out.txt

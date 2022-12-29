@@ -6,156 +6,114 @@ Autores:
 *)
 
 (*Algoritmo CYK (de Cocke, Younger e Kasami)*)
-  
-  (*
-    Entrada: 
-      - Gramática G = (N, T, P, S)
-      - cadeia w
-    Saída: 
-      - se w pertence a L(G) ou não
-  *)
-    
-    (*
-      Função CYK(G, w)
-        - para todo i = 1, 2, ..., n faça
-            - para todo A pertencente a N faça
-                - M[i, i, A] := 0
-        - para todo i = 1, 2, ..., n faça
-            - para todo A pertencente a N faça
-                - para todo B pertencente a P faça
-                    - se B -> aA é uma regra de produção de G faça
-                        - M[i, i, A] := M[i, i, A] + 1
-        - para todo l = 2, 3, ..., n faça
-            - para todo i = 1, 2, ..., n - l + 1 faça
-                - para todo j = i + 1, i + 2, ..., i + l - 1 faça
-                    - para todo A pertencente a N faça
-                        - para todo B pertencente a P faça
-                            - se B -> CD é uma regra de produção de G faça
-                                - M[i, j, A] := M[i, j, A] + M[i, j - 1, C] * M[j, i + l - 1, D]
-        - se M[1, n, S] > 0 então
-            - retorne verdadeiro
-        - senão
-            - retorne falso
-      Fim da função CYK(G, w)
-    
-    type regra_producao = {esquerda: string; direita: string}
-    type nao_terminais = (int, string) Hashtbl.t
-    type terminais = (int, string) Hashtbl.t
-    type regras_producao = (int, regra_producao) Hashtbl.t
-    type gramatica = {nao_terminais: nao_terminais; terminais: terminais; regras_producao: regras_producao; inicial: string}
-
-
-
-
-
- 
-        
-
-
-    let cyk gramatica cadeia =
-      let n = String.length cadeia in
-      let m = Array.make_matrix (n + 1) (n + 1) (Hashtbl.create 0) in
-      for i = 1 to n do
-        for a = 0 to (Hashtbl.length gramatica.nao_terminais) - 1 do
-          Hashtbl.add m.(i).(i) (Hashtbl.find gramatica.nao_terminais a) 0
-        done
-      done;
-      print_endline"ERR";
-      for i = 1 to n do
-        for a = 0 to (Hashtbl.length gramatica.nao_terminais) - 1 do
-          for b = 0 to (Hashtbl.length gramatica.regras_producao) - 1 do
-            let regra = Hashtbl.find gramatica.regras_producao b in
-            if regra.esquerda = (Hashtbl.find gramatica.nao_terminais a) && regra.direita = (String.make 1 cadeia.[i - 1]) then
-              Hashtbl.replace m.(i).(i) (Hashtbl.find gramatica.nao_terminais a) ((Hashtbl.find m.(i).(i) (Hashtbl.find gramatica.nao_terminais a)) + 1)
-          done
-        done
-      done;
-      print_endline"ERR1";
-      for l = 2 to n do
-        for i = 1 to n - l + 1 do
-          for j = i + 1 to i + l - 1 do
-            for a = 0 to (Hashtbl.length gramatica.nao_terminais) - 1 do
-              for b = 0 to (Hashtbl.length gramatica.regras_producao) - 1 do
-                let regra = Hashtbl.find gramatica.regras_producao b in
-                print_endline (string_of_int (b));
-                if regra.esquerda = (Hashtbl.find gramatica.nao_terminais a) then
-                  Hashtbl.replace m.(i).(i + l - 1) (Hashtbl.find gramatica.nao_terminais a) ((Hashtbl.find m.(i).(i + l - 1) (Hashtbl.find gramatica.nao_terminais a))
-                  + ((Hashtbl.find m.(i).(j - 1) (String.make 1 regra.direita.[0])) * (Hashtbl.find m.(j).(i + l - 1) (String.make 1 regra.direita.[1]))))
-              done
-            done
-          done
-        done
-      done;
-      print_endline"ERR2";
-      if (Hashtbl.find m.(1).(n) gramatica.inicial) > 0 then
-        true
-      else
-        false
-
-        let () = 
-        let gramatica =  {nao_terminais = Hashtbl.create 0; terminais = Hashtbl.create 0; regras_producao = Hashtbl.create 0; inicial = ""} in 
-        Hashtbl.add gramatica.nao_terminais 0 "S";
-        Hashtbl.add gramatica.nao_terminais 1 "A";
-        Hashtbl.add gramatica.nao_terminais 2 "B";
-        Hashtbl.add gramatica.nao_terminais 3 "C";
-        Hashtbl.add gramatica.terminais 0 "a";
-        Hashtbl.add gramatica.terminais 1 "b";
-        Hashtbl.add gramatica.terminais 2 "c";
-        Hashtbl.add gramatica.regras_producao 0 {esquerda = "S"; direita = "AB"};
-        Hashtbl.add gramatica.regras_producao 1 {esquerda = "S"; direita = "BC"};
-        Hashtbl.add gramatica.regras_producao 2 {esquerda = "A"; direita = "aA"};
-        Hashtbl.add gramatica.regras_producao 3 {esquerda = "A"; direita = "b"};
-        Hashtbl.add gramatica.regras_producao 4 {esquerda = "B"; direita = "bB"};
-        Hashtbl.add gramatica.regras_producao 5 {esquerda = "B"; direita = "c"};
-        Hashtbl.add gramatica.regras_producao 6 {esquerda = "C"; direita = "cC"};
-        Hashtbl.add gramatica.regras_producao 7 {esquerda = "C"; direita = "a"};
-        print_endline( string_of_bool( cyk gramatica "abcc"));;
-(*
-  Exemplo de uso:
-    let gramatica = {
-      nao_terminais = Hashtbl.create 0;
-      terminais = Hashtbl.create 0;
-      regras_producao = Hashtbl.create 0;
-      inicial = "S"
-    } in
-    Hashtbl.add gramatica.nao_terminais 0 "S";
-    Hashtbl.add gramatica.nao_terminais 1 "A";
-    Hashtbl.add gramatica.nao_terminais 2 "B";
-    Hashtbl.add gramatica.nao_terminais 3 "C";
-    Hashtbl.add gramatica.terminais 0 "a";
-    Hashtbl.add gramatica.terminais 1 "b";
-    Hashtbl.add gramatica.terminais 2 "c";
-    Hashtbl.add gramatica.regras_producao 0 {esquerda = "S"; direita = "AB"};
-    Hashtbl.add gramatica.regras_producao 1 {esquerda = "S"; direita = "BC"};
-    Hashtbl.add gramatica.regras_producao 2 {esquerda = "A"; direita = "aA"};
-    Hashtbl.add gramatica.regras_producao 3 {esquerda = "A"; direita = "b"};
-    Hashtbl.add gramatica.regras_producao 4 {esquerda = "B"; direita = "bB"};
-    Hashtbl.add gramatica.regras_producao 5 {esquerda = "B"; direita = "c"};
-    Hashtbl.add gramatica.regras_producao 6 {esquerda = "C"; direita = "cC"};
-    Hashtbl.add gramatica.regras_producao 7 {esquerda = "C"; direita = "a"};
-    cyk gramatica "abcc"
-*)*)
 (*Input *)
 
 (*Ler palavra para reconhecer *)
 let palavra = read_line ()
-
 
 (*Ler quantas transições temos*)
 let num_transicoes = read_int ()
 
 (*Função para ler uma transição e devolve os caracteres, o primeiro é de onde vem para onde vai S -> a = (S,a)*)
 let lerLinha = 
-  let linha = read_line () in
-  if String.length linha == 6 then (linha.[0], linha.[5], ' ')
-  else (linha.[0], linha.[5], linha.[7])
+  let list = ref [] in
+  for i = 1 to num_transicoes do
+    let linha = read_line () in
+    if String.length linha == 6 then list:= !list @ [(linha.[0], linha.[5], ' ')]
+    else list:= !list @ [(linha.[0], linha.[5], linha.[7])]
+  done;
+  !list
+
 
 (*Lista onde vai guardar todas as transiçoes*)
-let list_trans = List.init num_transicoes (fun _ -> lerLinha)
+let list_trans = lerLinha
+
+
+let explode_string s = List.init (String.length s) (String.get s)
 
 
 
-let () = 
-(*Print list_trans*)
+(*Função para verificar se uma letra está na lista*)
 
-List.iter (fun (a, b, c) -> print_endline ( String.make 1 a ^ " -> " ^  String.make 1 b ^ " " ^ String.make 1 c  )) (list_trans)
+(*cyk é a matriz que vai guardar os resultados*)
+let cyk = 
+  (*
+  DEBUG
+  List.iter (fun (a,b,c) -> print_endline (String .make 1 a ^ String .make 1 b ^ String .make 1 c )) list_trans;
+  *)
+  (*tamanho da palavra*)
+  let m = String.length palavra in
+  (*x y valor para inicial*)
+  let matrix = Array.make_matrix (m) (m+1) [] in
+  (*inicializar com a ultima camada a 0*)
+  for i = 0 to m-1 do
+    matrix.(i).(m) <- [palavra.[i]]
+  done;
+  (*Preencher a matriz*)
+  let novas_transicoes = ref [] in
+  for j = m-1 downto 0 do
+    for i = 0 to j do
+      (*numero de caracteres a ir buscar *)
+      let num = m - j in
+      let string = String.sub palavra i num in
+      let list_string = explode_string string in
+      (*print_endline string;*)
+      (*verificar se a string pertence a L(G)*)
+      (*Ir percorrer caracter a caracter*)
+      if List.length list_string == 1 
+      then(
+        (*Verificar se o caracter está na lista*)
+        let list = List.find_all (fun (a,b,c) -> b = List.hd list_string || c = List.hd list_string) list_trans in
+        (*Se estiver, adicionar ao array*)
+        if list <> [] then
+          matrix.(i).(j) <- matrix.(i).(j) @ (List.map (fun (a,b,c) -> a) list);
+          novas_transicoes := !novas_transicoes @ List.map (fun (a,b,c) -> (String.make 1 a, String.make 1 b, String.make 1 c)) list
+      )else(
+        (*Percorrer a string exemplo aa fica a,a ; aba -> a,ba e ab,a*)
+        for k = 0 to num-2 do
+          let cor_string_1 = String.sub string 0 (k+1) in
+          let cor_string_2 = String.sub string (k+1) (num-k-1) in
+          (*DEBUG
+          print_endline ("cor_1" ^ cor_string_1);
+          print_endline ("cor_2" ^ cor_string_2);
+          *)
+          let list = List.map (fun (a,b,c) -> (a)) (List.find_all (fun (a,b,c) -> b = cor_string_1 || c = cor_string_1) !novas_transicoes) in 
+          let list_2 = List.map (fun (a,b,c) -> (a)) (List.find_all (fun (a,b,c) -> b = cor_string_2 || c = cor_string_2) !novas_transicoes) in 
+          if list <> [] && list_2 <> [] then
+            (*junta os a das listas *)
+            let nova_lista = List.concat(List.map (fun x -> List.map (fun y -> (x,y)) list_2) list) in
+            (*Procurar os que tem x,y*)
+            let nova_lista = List.concat ( List.map  (fun (x,y)  ->  List.find_all( fun (a,b,c) ->  (String.make 1 b)=x && y =(String.make 1 c)) list_trans )  nova_lista) in
+            
+
+            (*Retirar os repetidos e meter por ordem alphabetica*)
+
+            let nova_lista = List.sort_uniq (fun (a,b,c) (d,e,f) -> compare a d) nova_lista in
+            (*DEBUG
+            List.iter (fun (a,b,c) -> print_endline (String.make 1 a)) nova_lista;
+            *)
+            
+          (*Se estiver, adicionar ao array*)
+            matrix.(i).(j) <- matrix.(i).(j) @ (List.map (fun (a,b,c) -> a) nova_lista);
+            novas_transicoes := !novas_transicoes @ List.map (fun (a,b,c) -> (String.make 1 a, cor_string_1^cor_string_2, "")) nova_lista
+
+          
+
+        done
+      )
+    done;
+  done;
+  (*Se exister um S na primeira posição da matriz da print a YES se não a NO*)
+  if List.mem 'S' matrix.(0).(0) then print_endline "YES" else print_endline "NO";
+  
+  (**Print da matriz que guarda os resultados em lista de chars*)
+  for i = 0 to m do
+    for j = 0 to m-1 do
+      Printf.printf "%s\t\t" (String.concat " " (List.map (fun x -> String.make 1 x) (List.sort_uniq (fun (a) (d) -> compare a d) matrix.(j).(i))))
+    done;
+    Printf.printf "\n"
+  done;;
+  
+  
+  
+
