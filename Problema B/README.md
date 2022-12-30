@@ -22,6 +22,7 @@ cada célula da matriz é separada da célula adjacente à direita por 2 tabs (\
 Sempre que uma célula contém mais do que um não terminal, estes são separados por um só espaço, e estes estão ordenados por ordem alfabética.
 ```
 ## Sample Input 1
+```
 abbabba
 7
 S -> S F
@@ -31,7 +32,9 @@ A -> S S
 A -> C S
 C -> b
 F -> A S
+```
 ## Sample Output 1
+```
 YES
 S               
   F             
@@ -41,3 +44,4 @@ S       S
   A   A     A   A     
 S   C   C   S   C   C   S   
 a   b   b   a   b   b   a   
+```
