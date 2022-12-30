@@ -2,5 +2,5 @@ aabaa
 4
 S -> A B
 S -> b
-A -> a
+A -> a 
 B -> S A
